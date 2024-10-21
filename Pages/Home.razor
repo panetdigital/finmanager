@@ -1,0 +1,121 @@
+﻿@page "/home"
+@inject TransactionService TransactionService
+@inject NavigationManager NavigationManager
+@using AppFinancia.Services;
+@using AppFinancia.Models;
+@inject IJSRuntime JS
+<PageTitle>Home</PageTitle>
+
+<div class="home-page">
+   <i class="bi bi-person fs-3"></i> <h2>Ola! @userName</h2>
+</div>
+
+<!-- Cartões de Resumo -->
+<div class="row mb-4">
+
+     <div class="col-md-4">
+        <div class="card text-white bg-info">
+            <div class="card-header">Saldo Geral</div>
+            <div class="card-body">
+                <h5 class="card-title">@SaldoGeral.ToString("C")</h5>
+                
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card text-white bg-danger">
+            <div class="card-header">Despesa Mensal</div>
+            <div class="card-body">
+                <h5 class="card-title">@DespesaMensal.ToString("C")</h5>
+             </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card text-white bg-success">
+            <div class="card-header">Receita Mensal</div>
+            <div class="card-body">
+                <h5 class="card-title">@ReceitaMensal.ToString("C")</h5>
+             </div>
+        </div>
+    </div>
+    
+   
+</div>
+
+<!-- Botões de Ação -->
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <button class="btn btn-primary w-100" @onclick="GoToAddTransaction">Adicionar Nova Transação</button>
+    </div>
+      <div class="col-md-6 mb-4">
+        <button class="btn btn-warning w-100" @onclick="GoToCartao">Cartão de Credito</button>
+    </div>
+    <div class="col-md-6 mb-4">
+        <button class="btn btn-secondary w-100" @onclick="GoToListTransactions">Listar Transações</button>
+    </div>
+    <div class="col-md-6 mb-4">
+        <button class="btn btn-info w-100" @onclick="GoToReports">Rélatorios</button>
+    </div>
+   
+</div>
+
+@code {
+    private decimal ReceitaMensal => _transactions.Where(t => !t.IsExpense && t.Date.Month == DateTime.Today.Month && t.Date.Year == DateTime.Today.Year).Sum(t => t.Amount);
+    private decimal DespesaMensal => _transactions.Where(t => t.IsExpense && t.Date.Month == DateTime.Today.Month && t.Date.Year == DateTime.Today.Year).Sum(t => t.Amount);
+    private decimal SaldoGeral => _transactions.Where(t => !t.IsExpense).Sum(t => t.Amount) - _transactions.Where(t => t.IsExpense).Sum(t => t.Amount);
+
+    private string userName = "Carregando...";
+
+    private List<Transaction> _transactions = new List<Transaction>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _transactions = await TransactionService.GetTransactionsAsync();
+
+        // Recupera o e-mail do LocalStorage
+        var userEmail = await JS.InvokeAsync<string>("localStorage.getItem", "userEmail");
+
+        if (!string.IsNullOrEmpty(userEmail))
+        {
+            // Busca o nome do usuário no Firebase com base no e-mail
+            userName = await JS.InvokeAsync<string>("getUserNameByEmail", userEmail);
+        }
+        else
+        {
+            userName = "Usuário não identificado";
+        }
+    }
+
+    private void GoToAddTransaction()
+    {
+        NavigationManager.NavigateTo("add-transaction");
+    }
+
+    private void GoToListTransactions()
+    {
+        NavigationManager.NavigateTo("lista-transaction");
+    }
+     private void GoToReports()
+    {
+        NavigationManager.NavigateTo("reports");
+    }
+
+     private void GoToCartao()
+    {
+        NavigationManager.NavigateTo("credit-card-overview");
+    }
+}
+<style>
+    .home-page {
+        background-color: #e0f7e9;
+        height:;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        text-align: center;
+        color: #333;
+    }
+</style>

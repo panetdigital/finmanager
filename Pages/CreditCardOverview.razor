@@ -1,0 +1,164 @@
+@page "/credit-card-overview"
+@using CreditCardApp.Models
+@using Blazored.LocalStorage
+@inject ILocalStorageService LocalStorage
+@inject NavigationManager NavigationManager
+
+<h5 class="text-center" style="color: rgb(255, 174, 0); font-family: 'Comic Sans MS', cursive;">
+  <i class="bi bi-credit-card"></i> Cartão
+</h5>
+
+<!-- Seleção de Cartão -->
+<div class="form-group">
+    <label for="selectedCard">Selecione o Cartão:</label>
+    <select class="form-control" @onchange="OnCardChanged">
+        @foreach (var card in creditCards)
+        {
+            <option value="@card.CardName">@card.CardName</option>
+        }
+    </select>
+</div>
+
+<!-- Resumo do Cartão Selecionado -->
+<div class="card mb-3">
+    <div class="card-body">
+        <h5 class="card-title">Cartão: @selectedCard?.CardName</h5>
+        <p class="card-text">Limite: @selectedCard?.CreditLimit.ToString("C")</p>
+        <p class="card-text">Saldo Disponível: @availableBalance.ToString("C")</p>
+    </div>
+</div>
+
+<!-- Ações rápidas -->
+<div class="row mb-4">
+    
+
+  <div class="col">
+    <button class="btn btn-primary btn-xs" @onclick="AddTransaction" 
+        style="font-size: 0.7rem; padding: 0.2rem 0.4rem;" aria-label="Adicionar nova transação">
+        <i class="bi bi-plus-circle"></i> Nova
+    </button>
+</div>
+
+   <div class="col">
+    <button class="btn btn-secondary btn-xs" @onclick="ViewTransactions" 
+        style="font-size: 0.7rem; padding: 0.2rem 0.4rem;">
+        <i class="bi bi-list"></i> Transações
+    </button>
+</div>
+
+<div class="col">
+    <button class="btn btn-warning btn-xs" @onclick="ConfigureCreditCard" 
+        style="font-size: 0.7rem; padding: 0.2rem 0.4rem;">
+        <i class="bi bi-gear"></i> Cartão
+    </button>
+</div>
+  
+</div>
+
+<!-- Resumo das últimas transações -->
+<h6>Relatório do Cartão de Crédito</h6>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Gasto</th>
+            <th>Motivo</th>
+            <th>Valor</th>
+            <th>Parcelas</th>
+            <th>Vencimento</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var transaction in filteredTransactions)
+        {
+            <tr>
+                <td>@transaction.ExpenseName</td>
+                <td>@transaction.Reason</td>
+                <td>@transaction.Amount.ToString("C")</td>
+                <td>@transaction.Installments</td>
+                <td>@transaction.DueDate.ToShortDateString()</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h6>Total da fatura: @filteredTransactions.Sum(t => t.Amount).ToString("C")</h6>
+
+@code {
+    private List<CreditCardTransaction> transactions = new List<CreditCardTransaction>();
+    private List<CreditCardTransaction> filteredTransactions = new List<CreditCardTransaction>();
+    private List<CreditCard> creditCards = new List<CreditCard>();
+    private CreditCard selectedCard;
+    private string selectedCardName;
+    private decimal availableBalance;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        // Carrega os cartões de crédito do LocalStorage
+        var storedCards = await LocalStorage.GetItemAsync<List<CreditCard>>("creditCards");
+        if (storedCards != null)
+        {
+            creditCards = storedCards;
+            selectedCardName = creditCards.FirstOrDefault()?.CardName; 
+            selectedCard = creditCards.FirstOrDefault();
+        }
+
+        // Carrega as transações do LocalStorage
+        var storedTransactions = await LocalStorage.GetItemAsync<List<CreditCardTransaction>>("creditCardTransactions");
+        if (storedTransactions != null)
+        {
+            transactions = storedTransactions;
+            FilterCurrentMonth();
+        }
+
+        // Calcula o saldo disponível (Exemplo de lógica, ajuste conforme sua necessidade)
+        availableBalance = (selectedCard?.CreditLimit ?? 0) - transactions
+    .Where(t => t.CreditCardName == selectedCardName)
+    .Sum(t => t.Amount);
+ }
+
+    private void FilterCurrentMonth()
+    {
+        if (!string.IsNullOrEmpty(selectedCardName))
+        {
+            var currentMonth = DateTime.Now.Month;
+            var currentYear = DateTime.Now.Year;
+            
+            filteredTransactions = transactions
+                .Where(t => t.CreditCardName == selectedCardName && t.DueDate.Month == currentMonth && t.DueDate.Year == currentYear)
+                .ToList();
+        }
+    }
+
+    private void ShowAllTransactions()
+    {
+        if (!string.IsNullOrEmpty(selectedCardName))
+        {
+            filteredTransactions = transactions.Where(t => t.CreditCardName == selectedCardName).ToList();
+        }
+    }
+
+    private async Task OnCardChanged(ChangeEventArgs e)
+    {
+        selectedCardName = e.Value.ToString();
+        selectedCard = creditCards.FirstOrDefault(c => c.CardName == selectedCardName);
+        FilterCurrentMonth();
+    }
+
+    private void AddTransaction()
+    {
+        // Navegar para a página de adicionar transação
+        NavigationManager.NavigateTo("add-creditcard-transaction");
+    }
+
+    private void ViewTransactions()
+    {
+        // Navegar para a página de ver todas as transações
+        NavigationManager.NavigateTo("/credit-card-report");
+    }
+
+    private void ConfigureCreditCard()
+    {
+        // Navegar para a página de configuração do cartão
+        NavigationManager.NavigateTo("/configure-creditcard");
+    }
+}

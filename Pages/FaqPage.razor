@@ -1,0 +1,127 @@
+@page "/faq"
+
+<div class="faq-page">
+    <h2>Perguntas Frequentes</h2>
+
+    @foreach (var faq in faqs)
+    {
+        <div class="faq-item">
+            <h3 @onclick="() => ToggleAnswer(faq)">@faq.Question</h3>
+            @if (faq.ShowAnswer)
+            {
+                <p>@faq.Answer</p>
+            }
+        </div>
+    }
+
+     <div class="container" style="text-align: center;">
+        <img src="site-seguro.png" alt="Descrição da imagem">
+      </div>
+
+</div>
+
+<style>
+    .faq-page {
+        background-color: #e0f7e9;
+        padding: 20px;
+        max-width: 800px;
+        margin: 0 auto;
+        font-family: Arial, sans-serif;
+    }
+
+    .faq-item {
+        margin-bottom: 20px;
+    }
+
+    h2 {
+        color: #2c3e50;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    h3 {
+        cursor: pointer;
+        background-color: #007bff;
+        color: white;
+        padding: 10px;
+        border-radius: 5px;
+        font-size: 1.2rem;
+        transition: background-color 0.3s ease-in-out;
+    }
+
+    h3:hover {
+        background-color: #0056b3;
+    }
+
+    p {
+        background-color: white;
+        border-left: 5px solid #007bff;
+        padding: 15px;
+        border-radius: 5px;
+        margin-top: 10px;
+    }
+</style>
+
+@code {
+    private List<FaqItem> faqs = new List<FaqItem>
+    {
+
+        new FaqItem 
+        {
+            Question = "O app finMager tem alguma ligação com meu app do banco?",
+            Answer = "Não, o finMager não possui integração com aplicativos bancários ou de cartão de crédito. Ele é uma ferramenta independente para gerenciar sua renda e despesas de forma clara e organizada."
+        },
+        new FaqItem 
+        {
+            Question = "Preciso cadastrar meu cartão de crédito para poder testar?",
+            Answer = "Não, para aproveitar o período de teste  de forma gratuita, não será necessário cadastrar seu cartão de crédito. Nenhum dado de pagamento será solicitado durante o período de teste."
+        },
+        new FaqItem {
+        Question = "Qual a diferença entre a versão gratuita e a paga do app financeiro?",
+        Answer = "A versão gratuita oferece funcionalidades básicas e armazenamento local de dados, Sem sincronização com outros dispositivos, Sem autenticação por senha. A versão paga inclui sincronização em nuvem, acesso multiplataforma (Android, iOS, web) e segurança com autenticação por senha."
+        },
+       
+        new FaqItem 
+        {
+            Question = "Quanto custa a assinatura do app-financeiro?",
+            Answer = "A assinatura do app tem um custo mensal de R$22,90. Há também a opção de assinatura anual por 12x de R$19,83 ou R$150,90 à vista."
+        },
+        new FaqItem 
+        {
+            Question = "O aplicativo pode ser usado offline?",
+            Answer = "Sim. Os aplicativos para Android e iOS funcionam offline. Você pode anotar seus gastos mesmo sem internet, e os dados serão sincronizados quando você se conectar novamente versão pagou."
+        },
+        new FaqItem 
+        {
+            Question = "O aplicativo vende dados financeiros para terceiros?",
+            Answer = "Nunca. Nossa única fonte de receita é a sua assinatura. Seus dados financeiros estão seguros e não serão compartilhados com terceiros."
+        },
+        new FaqItem 
+        {
+            Question = "O aplicativo pode deixar de existir?",
+            Answer = "Não. Estamos operando desde 2020 com crescimento constante. Continuaremos a evoluir e melhorar nossos serviços para impactar positivamente a vida dos usuários."
+        },
+        new FaqItem 
+        {
+            Question = "Posso usar o aplicativo no celular e no computador?",
+            Answer = "Sim. O aplicativo está disponível em versões mobile e desktop, permitindo que você gerencie suas finanças de qualquer dispositivo, mas dados são sincronizados solmente versão pagou."
+        },
+        new FaqItem 
+        {
+            Question = "Assinando pela Web, posso usar o aplicativo no celular?",
+            Answer = "Sim. Se você fizer a assinatura pela Web, poderá usar o aplicativo também no seu celular, sem restrições."
+        }
+    };
+
+    private void ToggleAnswer(FaqItem faq)
+    {
+        faq.ShowAnswer = !faq.ShowAnswer;
+    }
+
+    public class FaqItem
+    {
+        public string Question { get; set; }
+        public string Answer { get; set; }
+        public bool ShowAnswer { get; set; } = false;
+    }
+}

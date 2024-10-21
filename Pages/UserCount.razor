@@ -1,0 +1,73 @@
+@page "/usercount"
+
+<div class="user-count-container">
+    <h3 class="user-count-title">Total de Usuários nas Últimas 24 Horas</h3>
+    <div class="user-count-number">@userCount</div>
+    <p class="user-count-message">@message</p>
+</div>
+<style>
+    .user-count-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f0f8ff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    margin: 20px auto;
+}
+
+.user-count-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #dfdfe9;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.user-count-number {
+    font-size: 48px;
+    font-weight: bold;
+    color: #4CAF50;
+    background-color: #e0f7fa;
+    padding: 10px 20px;
+    border-radius: 8px;
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.1);
+}
+
+.user-count-message {
+    font-size: 16px;
+    font-style: italic;
+    color: #333;
+    margin-top: 10px;
+    text-align: center;
+    background-color: #fafafa;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+</style>
+@code {
+    private int userCount = 0;
+    private int increment = 0;
+    private Random random = new Random();
+    private string message = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        userCount = random.Next(100, 500);
+
+        while (true)
+        {
+            increment = random.Next(5, 20);
+            userCount += increment;
+
+            message = $"{increment} novos usuários acessaram o site nos últimos minutos.";
+
+            await Task.Delay(5000);
+            StateHasChanged();
+        }
+    }
+}

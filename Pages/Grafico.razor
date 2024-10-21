@@ -1,0 +1,86 @@
+@page "/graficos"
+@inject TransactionService TransactionService
+@inject NavigationManager NavigationManager
+@using AppFinancia.Services;
+@using AppFinancia.Models;
+@inject IJSRuntime JS
+
+
+<h3>Relatório de Graficos Financeiro</h3>
+
+<div class="row">
+
+    <div class="col-md-4 p-3 border shadow">
+        <h6 class="text-muted">Comparação Receita e Despesa</h6>
+        <canvas id="incomeExpenseBarChart" width="400" height="200"></canvas>
+    </div><br/>
+    <div class="col-md-4 border shadow">
+        <h6 class="text-muted">Despesas por Categoria</h6>
+        <canvas id="expensesByCategoryChart" width="400" height="200"></canvas>
+    </div><br/>
+    
+    <div class="col-md-4 p-3 border shadow">
+        <h6 class="text-muted">Gastos e Receita ao longo do Tempo</h6>
+        <canvas id="expenseIncomeChart" width="400" height="200"></canvas>
+    </div>
+    
+    
+</div>
+
+@code {
+    private List<Transaction> transactions = new List<Transaction>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        transactions = await TransactionService.GetTransactionsAsync();
+        await GenerateLineChart();
+        await GeneratePieChart();
+        await GenerateBarChart();
+    }
+
+    private async Task GenerateLineChart()
+    {
+        var labels = transactions.Select(t => t.Date.ToShortDateString()).Distinct().ToArray();
+        var incomeData = labels.Select(label => transactions.Where(t => !t.IsExpense && t.Date.ToShortDateString() == label)
+                                                               .Sum(t => t.Amount)).ToArray();
+        var expenseData = labels.Select(label => transactions.Where(t => t.IsExpense && t.Date.ToShortDateString() == label)
+                                                                .Sum(t => t.Amount)).ToArray();
+
+        await JS.InvokeVoidAsync("chartHelper.createChart", 
+            await JS.InvokeAsync<IJSObjectReference>("document.getElementById", "expenseIncomeChart"),
+            labels, incomeData, expenseData);
+    }
+
+    private async Task GeneratePieChart()
+    {
+        var categories = transactions.Where(t => t.IsExpense)
+                                     .GroupBy(t => t.Category)
+                                     .Select(g => new 
+                                     { 
+                                         Category = g.Key, 
+                                         Total = g.Sum(t => t.Amount) 
+                                     })
+                                     .ToList();
+
+        var labels = categories.Select(c => $"{c.Category}: {c.Total:C}").ToArray();
+        var data = categories.Select(c => c.Total).ToArray();
+
+        await JS.InvokeVoidAsync("chartHelper.createPieChart", 
+            await JS.InvokeAsync<IJSObjectReference>("document.getElementById", "expensesByCategoryChart"),
+            labels, data);
+    }
+
+    private async Task GenerateBarChart()
+    {
+        var totalIncome = transactions.Where(t => !t.IsExpense).Sum(t => t.Amount);
+        var totalExpense = transactions.Where(t => t.IsExpense).Sum(t => t.Amount);
+
+        var labels = new[] { "Receita", "Despesa" };
+        var data = new[] { totalIncome, totalExpense };
+
+        await JS.InvokeVoidAsync("chartHelper.createBarChart", 
+            await JS.InvokeAsync<IJSObjectReference>("document.getElementById", "incomeExpenseBarChart"),
+            labels, data);
+    }
+}
+

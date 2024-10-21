@@ -1,0 +1,171 @@
+@page "/add-creditcard-transaction"
+@inject NavigationManager NavigationManager
+@using CreditCardApp.Models
+@using Blazored.LocalStorage
+
+<h6>
+  <span class="text-decoration-underline">Adicionar Transação no Crédito</span>
+</h6>
+@if (isLimitExceeded)
+{
+    <div class="alert alert-danger" role="alert">
+        Limite de crédito excedido! Por favor, revise o valor da transação.
+    </div>
+}
+
+@if (isTransactionSuccessful)
+{
+    <div class="alert alert-success" role="alert">
+        Transação adicionada com sucesso!
+    </div>
+}
+
+<div class="form-group">
+    <label for="selectedCard">Selecione o Cartão:</label>
+    <select class="form-control" @bind="selectedCardName">
+        @foreach (var card in creditCards)
+        {
+            <option value="@card.CardName">@card.CardName</option>
+        }
+    </select>
+</div>
+
+<div class="form-group">
+    <label for="expenseName">Nome do Gasto:</label>
+    <div class="input-group">
+        <input type="text" class="form-control" @bind="Transaction.ExpenseName" placeholder="Digite o nome do gasto" />
+        <select class="form-control" @onchange="(e) => Transaction.ExpenseName = e.Value.ToString()">
+            <option value="">Escolhe um gasto </option>
+            <option value="Alimentação">Alimentação</option>
+            <option value="Transporte">Transporte</option>
+            <option value="Educação">Educação</option>
+            <option value="Saúde">Saúde</option>
+            <option value="Lazer">Lazer</option>
+            <option value="Moradia">Moradia</option>
+        </select>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="reason">Motivo do Gasto:</label>
+    <input type="text" class="form-control" @bind="Transaction.Reason" />
+</div>
+
+<div class="form-group">
+    <label for="amount">Valor:</label>
+    <input type="number" class="form-control" @bind="Transaction.Amount" />
+</div>
+
+<div class="form-group">
+    <label for="installments">Parcelas:</label>
+    <input type="number" class="form-control" @bind="Transaction.Installments" />
+</div>
+
+<div class="form-group">
+    <label for="dueDate">Data de Vencimento:</label>
+    <input type="date" class="form-control" @bind="Transaction.DueDate" />
+</div>
+
+<div class="col-md-6 mb-4">
+    <button class="btn btn-primary w-100" @onclick="AddTransaction">Adicionar Transação</button>
+</div>
+
+<div class="col-md-6 mb-4">
+    <button class="btn btn-secondary w-100" @onclick="GoToListTransactions">Listar Transações</button>
+</div>
+
+<div class="col-md-6 mb-4">
+    <button class="btn btn-info w-100" @onclick="GoToListCardCredit">Listar de Cartão</button>
+</div>
+
+@code {
+    private CreditCardTransaction Transaction = new CreditCardTransaction();
+    private List<CreditCard> creditCards = new List<CreditCard>();
+    private List<CreditCardTransaction> transactions = new List<CreditCardTransaction>();
+    private string selectedCardName;
+    private bool isLimitExceeded = false;
+    private bool isTransactionSuccessful = false;
+
+    [Inject] private ILocalStorageService LocalStorage { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var storedCards = await LocalStorage.GetItemAsync<List<CreditCard>>("creditCards");
+        if (storedCards != null)
+        {
+            creditCards = storedCards;
+            selectedCardName = creditCards.FirstOrDefault()?.CardName;
+        }
+
+        var storedTransactions = await LocalStorage.GetItemAsync<List<CreditCardTransaction>>("creditCardTransactions");
+        if (storedTransactions != null)
+        {
+            transactions = storedTransactions;
+        }
+    }
+
+    private async Task AddTransaction()
+{
+    isLimitExceeded = false;
+    isTransactionSuccessful = false;
+
+    // Verifica se um cartão foi selecionado
+    if (selectedCardName == null)
+    {
+        Console.WriteLine("Selecione um cartão.");
+        return;
+    }
+
+    // Atribui o nome do cartão à transação
+    Transaction.CreditCardName = selectedCardName;
+
+    // Busca o cartão selecionado na lista de cartões
+    var selectedCard = creditCards.FirstOrDefault(c => c.CardName == selectedCardName);
+    
+    // Verifica se o cartão foi encontrado
+    if (selectedCard == null)
+    {
+        Console.WriteLine("Cartão não encontrado.");
+        return;
+    }
+
+    // Obtém o saldo atual e o limite de crédito do cartão
+    var currentBalance = selectedCard.CurrentBalance;
+    var creditLimit = selectedCard.CreditLimit;
+
+    // Verifica se a nova transação excede o limite de crédito
+    if (Transaction.Amount + currentBalance >= creditLimit)
+    {
+        isLimitExceeded = true;
+        Console.WriteLine("Limite de crédito excedido.");
+        return;
+    }
+
+    // Atualiza o saldo do cartão com o valor da nova transação
+    selectedCard.CurrentBalance += Transaction.Amount;
+
+    // Adiciona a nova transação à lista
+    transactions.Add(Transaction);
+
+    // Persiste as transações e o estado dos cartões no LocalStorage
+    await LocalStorage.SetItemAsync("creditCardTransactions", transactions);
+    await LocalStorage.SetItemAsync("creditCards", creditCards);
+
+    isTransactionSuccessful = true;
+    Console.WriteLine("Transação adicionada com sucesso.");
+
+    // Limpa a transação atual para futuras entradas
+    Transaction = new CreditCardTransaction();
+}
+
+
+    private void GoToListTransactions()
+    {
+        NavigationManager.NavigateTo("credit-card-report");
+    }
+
+    private void GoToListCardCredit()
+    {
+        NavigationManager.NavigateTo("configure-creditcard");
+    }
+}

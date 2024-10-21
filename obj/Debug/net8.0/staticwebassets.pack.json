@@ -1,0 +1,137 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\cheri\\source\\repos\\BlazorComLocalstorage\\AppFinanceiro\\bin\\Debug\\net8.0\\wwwroot\\_framework\\blazor.webassembly.js",
+      "PackagePath": "staticwebassets\\_framework\\blazor.webassembly.js"
+    },
+    {
+      "Id": "C:\\Users\\cheri\\source\\repos\\BlazorComLocalstorage\\AppFinanceiro\\obj\\Debug\\net8.0\\compressed\\obbb0l6azr.gz",
+      "PackagePath": "staticwebassets\\_framework\\blazor.webassembly.js.gz"
+    },
+    {
+      "Id": "C:\\Users\\cheri\\source\\repos\\BlazorComLocalstorage\\AppFinanceiro\\obj\\Debug\\net8.0\\scopedcss\\bundle\\AppFinancia.styles.css",
+      "PackagePath": "staticwebassets\\AppFinancia.styles.css"
+    },
+    {
+      "Id": "C:\\Users\\cheri\\source\\repos\\BlazorComLocalstorage\\AppFinanceiro\\obj\\Debug\\net8.0\\service-worker-assets.js",
+      "PackagePath": "staticwebassets\\service-worker-assets.js"
+    },
+    {
+      "Id": "C:\\Users\\cheri\\source\\repos\\BlazorComLocalstorage\\AppFinanceiro\\obj\\Debug\\net8.0\\service-worker\\service-worker.published.js",
+      "PackagePath": "staticwebassets\\service-worker.js"
+    },
+    {
+      "Id": "C:\\Users\\cheri\\source\\repos\\BlazorComLocalstorage\\AppFinanceiro\\wwwroot\\css\\app.css",
+      "PackagePath": "staticwebassets\\css\\app.css"
+    },
+    {
+      "Id": "C:\\Users\\cheri\\source\\repos\\BlazorComLocalstorage\\AppFinanceiro\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css"
+    },
+    {
+      "Id": "C:\\Users\\cheri\\source\\repos\\BlazorComLocalstorage\\AppFinanceiro\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\cheri\\source\\repos\\BlazorComLocalstorage\\AppFinanceiro\\wwwroot\\css\\custom.css",
+      "PackagePath": "staticwebassets\\css\\custom.css"
+    },
+    {
+      "Id": "C:\\Users\\cheri\\source\\repos\\BlazorComLocalstorage\\AppFinanceiro\\wwwroot\\favicon.png",
+      "PackagePath": "staticwebassets\\favicon.png"
+    },
+    {
+      "Id": "C:\\Users\\cheri\\source\\repos\\BlazorComLocalstorage\\AppFinanceiro\\wwwroot\\favicon2.png",
+      "PackagePath": "staticwebassets\\favicon2.png"
+    },
+    {
+      "Id": "C:\\Users\\cheri\\source\\repos\\BlazorComLocalstorage\\AppFinanceiro\\wwwroot\\gato.webp",
+      "PackagePath": "staticwebassets\\gato.webp"
+    },
+    {
+      "Id": "C:\\Users\\cheri\\source\\repos\\BlazorComLocalstorage\\AppFinanceiro\\wwwroot\\icon-192.png",
+      "PackagePath": "staticwebassets\\icon-192.png"
+    },
+    {
+      "Id": "C:\\Users\\cheri\\source\\repos\\BlazorComLocalstorage\\AppFinanceiro\\wwwroot\\icon-512Blazor.png",
+      "PackagePath": "staticwebassets\\icon-512Blazor.png"
+    },
+    {
+      "Id": "C:\\Users\\cheri\\source\\repos\\BlazorComLocalstorage\\AppFinanceiro\\wwwroot\\index.html",
+      "PackagePath": "staticwebassets\\index.html"
+    },
+    {
+      "Id": "C:\\Users\\cheri\\source\\repos\\BlazorComLocalstorage\\AppFinanceiro\\wwwroot\\joao.webp",
+      "PackagePath": "staticwebassets\\joao.webp"
+    },
+    {
+      "Id": "C:\\Users\\cheri\\source\\repos\\BlazorComLocalstorage\\AppFinanceiro\\wwwroot\\js\\chartHelper.js",
+      "PackagePath": "staticwebassets\\js\\chartHelper.js"
+    },
+    {
+      "Id": "C:\\Users\\cheri\\source\\repos\\BlazorComLocalstorage\\AppFinanceiro\\wwwroot\\js\\firebase.js",
+      "PackagePath": "staticwebassets\\js\\firebase.js"
+    },
+    {
+      "Id": "C:\\Users\\cheri\\source\\repos\\BlazorComLocalstorage\\AppFinanceiro\\wwwroot\\js\\pdfGenerator.js",
+      "PackagePath": "staticwebassets\\js\\pdfGenerator.js"
+    },
+    {
+      "Id": "C:\\Users\\cheri\\source\\repos\\BlazorComLocalstorage\\AppFinanceiro\\wwwroot\\js\\site.js",
+      "PackagePath": "staticwebassets\\js\\site.js"
+    },
+    {
+      "Id": "C:\\Users\\cheri\\source\\repos\\BlazorComLocalstorage\\AppFinanceiro\\wwwroot\\logo-app.webp",
+      "PackagePath": "staticwebassets\\logo-app.webp"
+    },
+    {
+      "Id": "C:\\Users\\cheri\\source\\repos\\BlazorComLocalstorage\\AppFinanceiro\\wwwroot\\logo_192.png",
+      "PackagePath": "staticwebassets\\logo_192.png"
+    },
+    {
+      "Id": "C:\\Users\\cheri\\source\\repos\\BlazorComLocalstorage\\AppFinanceiro\\wwwroot\\logo_512.png",
+      "PackagePath": "staticwebassets\\logo_512.png"
+    },
+    {
+      "Id": "C:\\Users\\cheri\\source\\repos\\BlazorComLocalstorage\\AppFinanceiro\\wwwroot\\logo_app.png",
+      "PackagePath": "staticwebassets\\logo_app.png"
+    },
+    {
+      "Id": "C:\\Users\\cheri\\source\\repos\\BlazorComLocalstorage\\AppFinanceiro\\wwwroot\\logo_app.webp",
+      "PackagePath": "staticwebassets\\logo_app.webp"
+    },
+    {
+      "Id": "C:\\Users\\cheri\\source\\repos\\BlazorComLocalstorage\\AppFinanceiro\\wwwroot\\manifest.webmanifest",
+      "PackagePath": "staticwebassets\\manifest.webmanifest"
+    },
+    {
+      "Id": "C:\\Users\\cheri\\source\\repos\\BlazorComLocalstorage\\AppFinanceiro\\wwwroot\\maria.webp",
+      "PackagePath": "staticwebassets\\maria.webp"
+    },
+    {
+      "Id": "C:\\Users\\cheri\\source\\repos\\BlazorComLocalstorage\\AppFinanceiro\\wwwroot\\sample-data\\weather.json",
+      "PackagePath": "staticwebassets\\sample-data\\weather.json"
+    },
+    {
+      "Id": "C:\\Users\\cheri\\source\\repos\\BlazorComLocalstorage\\AppFinanceiro\\wwwroot\\site-seguro.png",
+      "PackagePath": "staticwebassets\\site-seguro.png"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.AppFinancia.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.AppFinancia.props",
+      "PackagePath": "build\\AppFinancia.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.AppFinancia.props",
+      "PackagePath": "buildMultiTargeting\\AppFinancia.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.AppFinancia.props",
+      "PackagePath": "buildTransitive\\AppFinancia.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

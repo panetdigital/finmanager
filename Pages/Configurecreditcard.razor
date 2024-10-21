@@ -1,0 +1,84 @@
+@page "/configure-creditcard" 
+@using Blazored.LocalStorage
+@using CreditCardApp.Models
+
+<div class="container">
+    <h5 class="text-center" style="color: rgb(255, 174, 0); font-family: 'Comic Sans MS', cursive;">
+    <i class="bi bi-credit-card"></i> Cartão
+    </h5>
+
+    <!-- Botão para adicionar um novo cartão de crédito -->
+    <div class="text-right mb-3">
+        <button class="btn btn-primary btn-sm" @onclick="AddCard">Adicionar  Cartão</button>
+    </div>
+      <div class="text-right mb-3">
+        <button class="btn btn-warning  btn-sm" @onclick="PagarLimitCard">Pagar Fatura</button>
+    </div>
+
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Limite</th>
+                <th>Gasto</th>
+                <th>Limite</th>
+                <th>Ações</th> <!-- Nova coluna para ações -->
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var card in creditCards)
+            {
+                <tr>
+                    <td>@card.CardName</td>
+                    <td>@card.CreditLimit.ToString("C")</td>
+                    <td>@card.CurrentBalance.ToString("C")</td>
+                    <td>R$ @(card.CreditLimit - card.CurrentBalance),00</td> <!-- Calcula e exibe o limite disponível -->
+                    <td>
+                    <td>
+                    <button class="btn btn-danger" @onclick="() => RemoveCard(card)">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                    </td>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@code {
+    private List<CreditCard> creditCards = new List<CreditCard>();
+
+    [Inject] private ILocalStorageService LocalStorage { get; set; }
+    [Inject] private NavigationManager Navigation { get; set; }  <!-- Injetar o serviço de navegação -->
+
+    protected override async Task OnInitializedAsync()
+    {
+        var storedCards = await LocalStorage.GetItemAsync<List<CreditCard>>("creditCards");
+        if (storedCards != null)
+        {
+            creditCards = storedCards;
+        }
+    }
+
+    private async Task RemoveCard(CreditCard card)
+    {
+        // Remove o cartão da lista
+        creditCards.Remove(card);
+
+        // Atualiza o armazenamento local com a lista atualizada
+        await LocalStorage.SetItemAsync("creditCards", creditCards);
+    }
+
+    private void AddCard()
+    {
+        // Navega para a página de adição de novo cartão
+        Navigation.NavigateTo("/add-creditcard");
+    }
+
+     private void PagarLimitCard()
+    {
+        // Navega para a página de pagar fatura
+        Navigation.NavigateTo("/pay-creditcard-bill");
+    }
+}

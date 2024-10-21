@@ -1,0 +1,81 @@
+@page "/"
+@inject NavigationManager Navigation
+<div class="welcome-page">
+    <div class="content-wrapper text-center">
+        <!-- Logo simbólico -->
+        <img src="logo_512.png" alt="Logo do Aplicativo" class="app-logo" />
+
+        <!-- Apresentação moderna -->
+        <h1 class="app-title">Gerencie Suas Finanças de Forma Inteligente</h1>
+        <p class="app-description">Controle seus gastos e receitas com facilidade, segurança e praticidade.</p>
+        
+        <!-- Botão para continuar -->
+        <button class="btn btn-primary btn-lg mt-4" @onclick="Continue">Começar Agora</button>
+    </div>
+
+   
+</div>
+<UserCount />
+
+<Testimonial/>
+ <!-- Seção de Perguntas Frequentes -->
+    
+    <FaqPage />
+<style>
+    /* Fundo da página verde claro */
+    .welcome-page {
+        background-color: #e0f7e9; /* Verde claro */
+        @* height: 80vh; *@
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        text-align: center;
+        color: #333;
+    }
+
+    /* Logo simbólico */
+    .app-logo {
+        width: 150px;
+        height: auto;
+        margin-bottom: 20px;
+    }
+
+    /* Estilo do título do aplicativo */
+    .app-title {
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #2c3e50;
+    }
+
+    /* Descrição do aplicativo */
+    .app-description {
+        font-size: 1.2rem;
+        color: #34495e;
+    }
+
+    /* Botão continuar */
+    button.btn-primary {
+        background-color: #1abc9c;
+        border: none;
+        padding: 15px 30px;
+        font-size: 1.2rem;
+        font-weight: bold;
+        border-radius: 25px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease-in-out;
+    }
+
+    button.btn-primary:hover {
+        background-color: #16a085;
+    }
+</style>
+
+@code {
+    private void Continue()
+    {
+        // Navega para a página de cadastro
+        Navigation.NavigateTo("/login");
+    }
+}

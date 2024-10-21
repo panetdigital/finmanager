@@ -1,0 +1,55 @@
+@page "/pdf"
+@inject TransactionService TransactionService
+@inject IJSRuntime JSRuntime
+@using AppFinancia.Services;
+@using AppFinancia.Models;
+
+<h3>Transações</h3>
+
+<button class="btn btn-primary" @onclick="ExportToPdf">Exportar para PDF</button>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Descrição</th>
+            <th>Valor</th>
+            <th>Categoria</th>
+            <th>Data</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var transaction in _transactions)
+        {
+            <tr>
+                <td>@transaction.Description</td>
+                <td>@transaction.Amount.ToString("C")</td>
+                <td>@transaction.Category</td>
+                <td>@transaction.Date.ToShortDateString()</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private List<Transaction> _transactions = new List<Transaction>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _transactions = await TransactionService.GetTransactionsAsync();
+    }
+
+    private async Task ExportToPdf()
+    {
+        // Converter as transações para um formato que o JavaScript entenda
+        var transactionsForJs = _transactions.Select(t => new
+        {
+            description = t.Description,
+            amount = t.Amount,
+            category = t.Category.ToString(),
+            date = t.Date
+        });
+
+        // Chamar o método JS para exportar o PDF com os cabeçalhos fixos
+        await JSRuntime.InvokeVoidAsync("jsPDFGenerator.generatePDF", transactionsForJs);
+    }
+}

@@ -1,0 +1,66 @@
+﻿<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="" style="width: 50px; height: 50px;">
+            <img src="logo_192.png" alt="Meu Logo" class="img-fluid" />FinManager
+      </a>
+        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</div>
+
+<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
+   <nav class="flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="home" Match="NavLinkMatch.All">
+                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
+            </NavLink>
+        </div>
+        
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="lista-transaction">
+            <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Transaçoês
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+             <NavLink class="nav-link" href="add-transaction">
+                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Adiciona Transação
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+             <NavLink class="nav-link" href="reports">
+                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Relatorios
+            </NavLink>
+        </div>
+       <div class="nav-item px-3">
+            <NavLink class="nav-link" href="graficos">
+                <span class="bi bi-bar-chart-line" aria-hidden="true"></span> Gráficos
+            </NavLink>
+        </div>
+            
+        <div class="nav-item px-3">
+             <NavLink class="nav-link" href="advanced-filter">
+                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Filtros Avançada
+            </NavLink>
+        </div> 
+           
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="credit-card-overview">
+                <span class="bi bi-credit-card" aria-hidden="true"></span> Config Cartão
+            </NavLink>
+        </div>  
+           
+    </nav>
+</div>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}

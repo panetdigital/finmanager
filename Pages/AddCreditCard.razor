@@ -1,0 +1,69 @@
+@page "/add-creditcard" 
+@using CreditCardApp.Models
+@using Blazored.LocalStorage
+@inject ILocalStorageService LocalStorage
+@inject NavigationManager Navigation
+
+<h6>
+  <span class="text-decoration-underline">Adicionar Novo Cartão de Crédito</span>
+</h6>
+
+@if (isCardAdded)
+{
+    <div class="alert alert-success" role="alert">
+        Cartão adicionado com sucesso!
+    </div>
+}
+
+<div class="form-group">
+    <label for="cardName">Nome do Cartão:</label>
+    <input type="text" class="form-control" @bind="newCard.CardName" />
+</div>
+
+<div class="form-group">
+    <label for="creditLimit">Limite de Crédito:</label>
+    <input type="number" class="form-control" @bind="newCard.CreditLimit" />
+</div>
+
+<button class="btn btn-primary" @onclick="SubmitCreditCard">Adicionar Cartão</button>
+
+@code {
+    private CreditCard newCard = new CreditCard();
+    private List<CreditCard> creditCards = new List<CreditCard>();
+    private bool isCardAdded = false; // Variável para controle do alerta
+
+    protected override async Task OnInitializedAsync()
+    {
+        var storedCards = await LocalStorage.GetItemAsync<List<CreditCard>>("creditCards");
+        if (storedCards != null)
+        {
+            creditCards = storedCards;
+        }
+    }
+
+    private async Task SubmitCreditCard()
+    {
+        // Adicionar o novo cartão à lista
+        creditCards.Add(newCard);
+
+        // Salvar os cartões no LocalStorage
+        await LocalStorage.SetItemAsync("creditCards", creditCards);
+
+        // Exibir o alerta de sucesso
+        isCardAdded = true;
+
+        // Limpar os campos do formulário
+        ClearForm();
+
+        // Atualizar a página após 2 segundos
+        await Task.Delay(2500); 
+        Navigation.NavigateTo(Navigation.Uri, forceLoad: true);
+    }
+
+    private void ClearForm()
+    {
+        // Definir os valores dos campos para seus valores padrão
+        newCard.CardName = string.Empty; // Limpa o nome do cartão
+        newCard.CreditLimit = 0; // Reseta o limite de crédito
+    }
+}

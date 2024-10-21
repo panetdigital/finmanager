@@ -1,0 +1,57 @@
+@page "/add-transaction"
+@inject TransactionService TransactionService
+@inject NavigationManager NavigationManager
+@using AppFinancia.Services;
+@using AppFinancia.Models;
+<h3>Adicionar Transação</h3>
+
+<EditForm Model="_transaction" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-3 form-check">
+        <InputCheckbox id="isExpense" class="form-check-input" @bind-Value="_transaction.IsExpense"  />
+        <label class="form-check-label text-danger" for="isExpense">É despesa?</label>
+    </div>
+
+    <div class="mb-3">
+        <label for="category" class="form-label">Categoria</label>
+        <InputSelect id="category" class="form-control" @bind-Value="_transaction.Category">
+            @foreach (var category in Enum.GetValues(typeof(CategoriaTransaction)))
+            {
+                <option value="@category">@category</option>
+            }
+        </InputSelect>
+    </div>
+    
+    <div class="mb-3">
+        <label for="description" class="form-label">Descrição</label>
+        <InputText id="description" class="form-control" @bind-Value="_transaction.Description" />
+    </div>
+
+    <div class="mb-3">
+        <label for="amount" class="form-label">Valor</label>
+        <InputNumber id="amount" class="form-control" @bind-Value="_transaction.Amount" />
+    </div>
+
+    
+
+    <div class="mb-3">
+        <label for="date" class="form-label">Data</label>
+        <InputDate id="date" class="form-control" @bind-Value="_transaction.Date" />
+    </div>
+
+    
+
+    <button type="submit" class="btn btn-primary">Adicionar Transação</button>
+</EditForm>
+
+@code {
+    private Transaction _transaction = new Transaction { Date = DateTime.Today, IsExpense = true };
+
+    private async Task HandleValidSubmit()
+    {
+        await TransactionService.SaveTransactionAsync(_transaction);
+        NavigationManager.NavigateTo("lista-transaction");
+    }
+}

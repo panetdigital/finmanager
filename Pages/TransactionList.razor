@@ -1,0 +1,198 @@
+@page "/lista-transaction"
+@inject TransactionService TransactionService
+@inject CsvExportService CsvExportService
+@inject NavigationManager NavigationManager
+@using AppFinancia.Services;
+@using AppFinancia.Models;
+
+<h3>Transações</h3>
+
+<!-- Botões para alternar entre todas as transações e as do mês atual -->
+<div class="mb-3">
+    <button class="btn btn-primary btn-sm" @onclick="LoadAllTransactions">Mostrar Todas</button>
+    <button class="btn btn-secondary btn-sm" @onclick="LoadCurrentMonthTransactions">Mês Atual</button>
+</div>
+
+<button class="btn btn-primary btn-sm" @onclick="AddTransaction">Adicionar Transação</button>
+<button class="btn btn-success btn-sm" @onclick="ExportTransactionsToCsv">Exportar para CSV</button>
+
+@if (!string.IsNullOrEmpty(ErrorMessage))
+{
+    <div class="alert alert-danger">@ErrorMessage</div>
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Descrição</th>
+            <th>Valor</th>
+            <th>Categoria</th>
+            <th>Tipo</th>
+            <th>Data</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var transaction in _transactions)
+        {
+            <tr style="@(transaction.IsExpense ? "color: red;" : "color: green;")">
+                <td>@transaction.Description</td>
+                <td>@transaction.Amount.ToString("C")</td>
+                <td>@transaction.Category</td>
+                <td>@(transaction.IsExpense ? "Despesa" : "Receita")</td>
+                <td>@transaction.Date.ToShortDateString()</td>
+               <td>
+                <button class="btn btn-warning btn-sm" @onclick="() => EditTransaction(transaction)">Editar</button>
+                <span style="padding-bottom: 5px;"></span> 
+                <button class="btn btn-danger btn-sm" @onclick="() => DeleteTransaction(transaction.Id)">Excluir</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@* Modal de Edição *@
+@if (isEditModalVisible)
+{
+    <div class="modal show d-block" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar Transação</h5>
+                    <button type="button" class="close" @onclick="CloseEditModal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Descrição</label>
+                        <input type="text" class="form-control" @bind="editingTransaction.Description" />
+                    </div>
+                    <div class="form-group">
+                        <label>Valor</label>
+                        <input type="number" class="form-control" @bind="editingTransaction.Amount" />
+                    </div>
+                    <div class="form-group">
+                        <label>Categoria</label>
+                        <select class="form-control" @bind="editingTransaction.Category">
+                            @foreach (CategoriaTransaction category in Enum.GetValues(typeof(CategoriaTransaction)))
+                            {
+                                <option value="@category">@category</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Data</label>
+                        <input type="date" class="form-control" @bind="editingTransaction.Date" />
+                    </div>
+                   <div class="form-group">
+                        <label>
+                            <input type="checkbox" @bind="editingTransaction.IsExpense" />
+                            @if (editingTransaction.IsExpense)
+                            {
+                                <span>Despesa</span>
+                            }
+                            else
+                            {
+                                <span>Receita</span>
+                            }
+                        </label>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="CloseEditModal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" @onclick="SaveEditedTransaction">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private List<Transaction> _transactions = new List<Transaction>();
+    private string ErrorMessage;
+    private bool isEditModalVisible = false;
+    private Transaction editingTransaction = new Transaction();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _transactions = await TransactionService.GetTransactionsForCurrentMonthAsync();
+    }
+
+    private async Task LoadAllTransactions()
+    {
+        // Carrega todas as transações
+        _transactions = await TransactionService.GetTransactionsAsync();
+    }
+
+    private async Task LoadCurrentMonthTransactions()
+    {
+        // Carrega apenas as transações do mês atual
+        _transactions = await TransactionService.GetTransactionsForCurrentMonthAsync();
+    }
+
+
+    private async Task DeleteTransaction(int id)
+    {
+        await TransactionService.DeleteTransactionAsync(id);
+        _transactions = await TransactionService.GetTransactionsAsync();
+    }
+
+    private async Task AddTransaction()
+    {
+        NavigationManager.NavigateTo("/add-transaction");
+        @* try
+        {
+            var newTransaction = new Transaction
+            {
+                Description = "Nova Transação",
+                Amount = 10.00m,
+                Category = CategoriaTransaction.Outros,
+                Date = DateTime.Now,
+                IsExpense = true
+            };
+
+            await TransactionService.SaveTransactionAsync(newTransaction);
+            _transactions = await TransactionService.GetTransactionsAsync();
+            ErrorMessage = string.Empty; // Limpar mensagem de erro ao adicionar com sucesso
+        }
+        catch (InvalidOperationException ex)
+        {
+            ErrorMessage = ex.Message; // Exibir mensagem de erro se o limite for atingido
+        } *@
+    }
+
+    private void EditTransaction(Transaction transaction)
+    {
+        editingTransaction = new Transaction
+        {
+            Id = transaction.Id,
+            Description = transaction.Description,
+            Amount = transaction.Amount,
+            Category = transaction.Category,
+            Date = transaction.Date,
+            IsExpense = transaction.IsExpense
+        };
+        isEditModalVisible = true;
+    }
+
+    private async Task SaveEditedTransaction()
+    {
+        await TransactionService.UpdateTransactionAsync(editingTransaction);
+        _transactions = await TransactionService.GetTransactionsAsync();
+        CloseEditModal();
+    }
+
+
+    // Metodo Exporta Cvs
+     private async Task ExportTransactionsToCsv()
+    {
+        var transactions = await TransactionService.GetTransactionsAsync();
+        await CsvExportService.ExportTransactionsToCsvAsync(transactions);
+    }
+
+    private void CloseEditModal()
+    {
+        isEditModalVisible = false;
+        editingTransaction = new Transaction();
+    }
+}

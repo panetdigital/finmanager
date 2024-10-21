@@ -1,0 +1,106 @@
+@page "/pay-creditcard-bill"
+@using CreditCardApp.Models
+@using Blazored.LocalStorage
+@inject ILocalStorageService LocalStorage
+
+<h3>Pagar Fatura </h3>
+
+<div class="form-group">
+    <label for="selectedCard">Selecione o Cartão:</label>
+    <select class="form-control" @bind="selectedCardName">
+        @foreach (var card in creditCards)
+        {
+            <option value="@card.CardName">@card.CardName</option>
+        }
+    </select>
+</div>
+
+<div class="form-group">
+    <label for="paymentAmount">Valor do Pagamento:</label>
+    <input type="number" class="form-control" @bind="paymentAmount" />
+</div>
+
+<button class="btn btn-primary" @onclick="PayBill">Pagar Fatura</button>
+
+@if (paymentMessage != null)
+{
+    <div class="alert alert-info">@paymentMessage</div>
+}
+
+@code {
+    private List<CreditCard> creditCards = new List<CreditCard>();
+    private CreditCard selectedCard;
+    private string selectedCardName;
+    private decimal paymentAmount;
+    private string paymentMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Carregar cartões do localStorage
+        var storedCards = await LocalStorage.GetItemAsync<List<CreditCard>>("creditCards");
+        if (storedCards != null)
+        {
+            creditCards = storedCards;
+        }
+        else
+        {
+            // Se não houver cartões armazenados, inicializa com alguns exemplos
+          @*   creditCards = new List<CreditCard>
+            {
+                new CreditCard { CardName = "Cartão A", CreditLimit = 5000, CurrentBalance = 1500 },
+                new CreditCard { CardName = "Cartão B", CreditLimit = 3000, CurrentBalance = 800 }
+            }; 
+            // Salva os cartões iniciais no localStorage
+            await LocalStorage.SetItemAsync("creditCards", creditCards);*@
+        }
+
+        // Seleciona o primeiro cartão por padrão
+        selectedCardName = creditCards.FirstOrDefault()?.CardName;
+        selectedCard = creditCards.FirstOrDefault();
+    }
+
+    private void OnCardSelectionChanged()
+    {
+        // Atualiza o cartão selecionado com base no nome escolhido no dropdown
+        selectedCard = creditCards.FirstOrDefault(card => card.CardName == selectedCardName);
+    }
+
+    private async Task PayBill()
+    {
+        // Certifica-se de que o cartão foi selecionado corretamente
+        OnCardSelectionChanged();
+        
+        if (selectedCard != null)
+        {
+            if (paymentAmount <= 0)
+            {
+                paymentMessage = "O valor do pagamento deve ser maior que zero.";
+                return;
+            }
+
+            if (paymentAmount > selectedCard.CurrentBalance)
+            {
+                paymentMessage = "O valor do pagamento não pode ser maior que o saldo da fatura.";
+                return;
+            }
+
+            try
+            {
+                selectedCard.PayBill(paymentAmount);
+
+                // Atualizar os cartões no localStorage
+                await LocalStorage.SetItemAsync("creditCards", creditCards);
+
+                paymentMessage = $"Pagamento de {paymentAmount:C} realizado com sucesso! Valor Gasto: {selectedCard.CurrentBalance:C}";
+            }
+            catch (InvalidOperationException ex)
+            {
+                paymentMessage = ex.Message;
+            }
+        }
+        else
+        {
+            paymentMessage = "Cartão não encontrado.";
+        }
+    }
+}

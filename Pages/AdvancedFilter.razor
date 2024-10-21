@@ -1,0 +1,105 @@
+@page "/advanced-filter"
+@inject TransactionService TransactionService
+@inject NavigationManager NavigationManager
+@using AppFinancia.Services;
+@using AppFinancia.Models;
+
+<h3>Filtros de Transações</h3>
+
+<!-- Filtros -->
+<div class="row mb-4">
+    <div class="col-md-6">
+        <label for="transactionType" class="form-label">Tipo de Transação</label>
+        <select id="transactionType" class="form-select" @bind="selectedTransactionType">
+            <option value="Todos">Todos</option>
+            <option value="Receita">Receita</option>
+            <option value="Despesa">Despesa</option>
+        </select>
+    </div>
+
+    <div class="col-md-6">
+        <label for="description" class="form-label">Descrição</label>
+        <input id="description" type="text" class="form-control" @bind="searchDescription" />
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-6">
+        <label for="startDate" class="form-label">Data Inicial</label>
+        <InputDate id="startDate" class="form-control" @bind-Value="startDate" />
+    </div>
+    <div class="col-md-6">
+        <label for="endDate" class="form-label">Data Final</label>
+        <InputDate id="endDate" class="form-control" @bind-Value="endDate" />
+    </div>
+</div>
+
+<button class="btn btn-primary" @onclick="ApplyFilters">Aplicar Filtros</button>
+
+<!-- Resultados Filtrados -->
+@if (filteredTransactions.Any())
+{
+    <h4 class="mt-4">Resultados Filtrados</h4>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Descrição</th>
+                <th>Valor</th>
+                <th>Tipo</th>
+                <th>Data</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var transaction in filteredTransactions)
+            {
+                <tr style="@(transaction.IsExpense ? "color: red;" : "color: green;")">
+                    <td>@transaction.Description</td>
+                    <td>@transaction.Amount.ToString("C")</td>
+                    <td>@(transaction.IsExpense ? "Despesa" : "Receita")</td>
+                    <td>@transaction.Date.ToShortDateString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p class="mt-3">Nenhuma transação encontrada para os filtros aplicados.</p>
+}
+
+@code {
+    private string selectedTransactionType = "Todos";
+    private string searchDescription = string.Empty;
+    private DateTime startDate = DateTime.Today.AddMonths(-1);
+    private DateTime endDate = DateTime.Today;
+
+    private List<Transaction> _transactions = new List<Transaction>();
+    private List<Transaction> filteredTransactions = new List<Transaction>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _transactions = await TransactionService.GetTransactionsAsync();
+        filteredTransactions = _transactions;
+    }
+
+    private void ApplyFilters()
+    {
+        filteredTransactions = _transactions;
+
+        // Filtro por Tipo de Transação
+        if (selectedTransactionType != "Todos")
+        {
+            bool isExpense = selectedTransactionType == "Despesa";
+            filteredTransactions = filteredTransactions.Where(t => t.IsExpense == isExpense).ToList();
+        }
+
+        // Filtro por Descrição
+        if (!string.IsNullOrEmpty(searchDescription))
+        {
+            filteredTransactions = filteredTransactions.Where(t => t.Description.Contains(searchDescription, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+
+        // Filtro por Data
+        filteredTransactions = filteredTransactions.Where(t => t.Date >= startDate && t.Date <= endDate).ToList();
+    }
+}

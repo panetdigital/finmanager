@@ -1,0 +1,127 @@
+is_global = true
+build_property.EnableAotAnalyzer = 
+build_property.EnableSingleFileAnalyzer = 
+build_property.EnableTrimAnalyzer = false
+build_property.IncludeAllContentForSelfExtract = 
+build_property.TargetFramework = net8.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = false
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = browser
+build_property.RootNamespace = AppFinancia
+build_property.RootNamespace = AppFinancia
+build_property.ProjectDir = C:\Users\cheri\source\repos\BlazorComLocalstorage\AppFinanceiro\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = false
+build_property.RazorLangVersion = 8.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\cheri\source\repos\BlazorComLocalstorage\AppFinanceiro
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/Users/cheri/source/repos/BlazorComLocalstorage/AppFinanceiro/App.razor]
+build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/cheri/source/repos/BlazorComLocalstorage/AppFinanceiro/Pages/AddCreditCard.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRkQ3JlZGl0Q2FyZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/cheri/source/repos/BlazorComLocalstorage/AppFinanceiro/Pages/AddCreditCardTransaction.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRkQ3JlZGl0Q2FyZFRyYW5zYWN0aW9uLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/cheri/source/repos/BlazorComLocalstorage/AppFinanceiro/Pages/AddTransaction.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRkVHJhbnNhY3Rpb24ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/cheri/source/repos/BlazorComLocalstorage/AppFinanceiro/Pages/AdvancedFilter.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWR2YW5jZWRGaWx0ZXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/cheri/source/repos/BlazorComLocalstorage/AppFinanceiro/Pages/Configurecreditcard.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29uZmlndXJlY3JlZGl0Y2FyZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/cheri/source/repos/BlazorComLocalstorage/AppFinanceiro/Pages/Counter.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ291bnRlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/cheri/source/repos/BlazorComLocalstorage/AppFinanceiro/Pages/CreditCardOverview.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3JlZGl0Q2FyZE92ZXJ2aWV3LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/cheri/source/repos/BlazorComLocalstorage/AppFinanceiro/Pages/CreditCardReport.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3JlZGl0Q2FyZFJlcG9ydC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/cheri/source/repos/BlazorComLocalstorage/AppFinanceiro/Pages/Cvs.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3ZzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/cheri/source/repos/BlazorComLocalstorage/AppFinanceiro/Pages/FaqPage.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRmFxUGFnZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/cheri/source/repos/BlazorComLocalstorage/AppFinanceiro/Pages/Footer.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRm9vdGVyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/cheri/source/repos/BlazorComLocalstorage/AppFinanceiro/Pages/GerarPdf.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR2VyYXJQZGYucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/cheri/source/repos/BlazorComLocalstorage/AppFinanceiro/Pages/Grafico.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR3JhZmljby5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/cheri/source/repos/BlazorComLocalstorage/AppFinanceiro/Pages/Home.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSG9tZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/cheri/source/repos/BlazorComLocalstorage/AppFinanceiro/Pages/Login.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW4ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/cheri/source/repos/BlazorComLocalstorage/AppFinanceiro/Pages/PayCreditCardBill.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGF5Q3JlZGl0Q2FyZEJpbGwucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/cheri/source/repos/BlazorComLocalstorage/AppFinanceiro/Pages/Register.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVnaXN0ZXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/cheri/source/repos/BlazorComLocalstorage/AppFinanceiro/Pages/Reports.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVwb3J0cy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/cheri/source/repos/BlazorComLocalstorage/AppFinanceiro/Pages/Testimonial.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVGVzdGltb25pYWwucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/cheri/source/repos/BlazorComLocalstorage/AppFinanceiro/Pages/TransactionList.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVHJhbnNhY3Rpb25MaXN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/cheri/source/repos/BlazorComLocalstorage/AppFinanceiro/Pages/UserCount.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlckNvdW50LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/cheri/source/repos/BlazorComLocalstorage/AppFinanceiro/Pages/Welcome.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcV2VsY29tZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/cheri/source/repos/BlazorComLocalstorage/AppFinanceiro/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/cheri/source/repos/BlazorComLocalstorage/AppFinanceiro/Layout/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = TGF5b3V0XE1haW5MYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-n3q0ncr2tj
+
+[C:/Users/cheri/source/repos/BlazorComLocalstorage/AppFinanceiro/Layout/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = TGF5b3V0XE5hdk1lbnUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-fdf6obkjtn

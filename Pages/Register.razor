@@ -1,0 +1,117 @@
+@page "/register"
+@using System.ComponentModel.DataAnnotations
+@inject IJSRuntime JS
+@inject NavigationManager Navigation
+
+<div class="register-page">
+    <div class="content-wrapper text-center">
+         <!-- Logo simbólico -->
+        <img src="logo_512.png" alt="Logo do Aplicativo" class="app-logo" />
+
+        <!-- Título da página -->
+        <h2 class="app-title">Cadastre-se para Começar</h2>
+        
+        <!-- Formulário de registro -->
+        <EditForm Model="@user" OnValidSubmit="HandleValidSubmit">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="mb-3">
+                <label for="name" class="form-label">Nome</label>
+                <InputText id="name" class="form-control" @bind-Value="user.Name" @oninput="HandleNameInput" />
+            </div>
+
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <InputText id="email" class="form-control" @bind-Value="user.Email" @oninput="HandleEmailInput" />
+            </div>
+
+            <button type="submit" class="btn btn-success btn-lg">Cadastrar</button>
+        </EditForm>
+    </div>
+</div>
+
+<style>
+    .register-page {
+        background-color: #e0f7e9;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        text-align: center;
+        color: #333;
+    }
+    .app-logo {
+        width: 150px;
+        height: auto;
+        margin-bottom: 20px;
+    }
+    .app-title {
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 20px;
+        color: #2c3e50;
+    }
+    button.btn-success {
+        background-color: #27ae60;
+        border: none;
+        padding: 10px 25px;
+        font-size: 1.1rem;
+        font-weight: bold;
+        border-radius: 25px;
+        transition: background-color 0.3s ease-in-out;
+    }
+    button.btn-success:hover {
+        background-color: #218c54;
+    }
+</style>
+
+@code {
+    private UserModel user = new UserModel();
+
+    private async Task HandleValidSubmit()
+    {
+        // Converte o nome para "Primeira Letra Maiúscula" e o restante minúsculo
+        user.Name = CapitalizeFirstLetter(user.Name);
+        // Converte o email para minúsculo
+        user.Email = user.Email?.ToLowerInvariant();
+
+        // Chama a função JavaScript para salvar no Firebase Realtime Database
+        await JS.InvokeVoidAsync("saveUserToRealtimeDatabase", user.Name, user.Email);
+
+        // Redireciona após o cadastro
+        Navigation.NavigateTo("login");
+    }
+
+    private void HandleNameInput(ChangeEventArgs e)
+    {
+        // Atualiza o valor do nome enquanto o usuário digita
+        user.Name = CapitalizeFirstLetter(e.Value?.ToString());
+    }
+
+    private void HandleEmailInput(ChangeEventArgs e)
+    {
+        // Converte o email para minúsculo enquanto o usuário digita
+        user.Email = e.Value?.ToString()?.ToLowerInvariant();
+    }
+
+    private string CapitalizeFirstLetter(string input)
+    {
+        if (string.IsNullOrWhiteSpace(input))
+            return input;
+
+        input = input.ToLowerInvariant();  // Converte todo o texto para minúsculo
+        return char.ToUpper(input[0]) + input.Substring(1);  // Coloca a primeira letra em maiúsculo
+    }
+
+    public class UserModel
+    {
+        [Required(ErrorMessage = "Por favor, insira seu nome")]
+        public string Name { get; set; }
+
+        [Required(ErrorMessage = "Por favor, insira seu e-mail")]
+        [EmailAddress(ErrorMessage = "Formato de e-mail inválido")]
+        public string Email { get; set; }
+    }
+}

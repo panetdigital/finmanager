@@ -1,0 +1,111 @@
+@page "/credit-card-report"
+@using CreditCardApp.Models
+@using Blazored.LocalStorage
+@inject ILocalStorageService LocalStorage
+
+<div class="form-group" style="margin-bottom: 5px;">
+    <label for="selectedCard">Selecione o Cartão:</label>
+    <select class="form-control" @onchange="OnCardChanged">
+        @foreach (var card in creditCards)
+        {
+            <option value="@card.CardName">@card.CardName</option>
+        }
+    </select>
+</div>
+
+<div class="d-flex justify-content-between" style="margin-bottom: 5px;">
+    <button class="btn btn-primary btn-sm m-0 p-0" @onclick="FilterCurrentMonth">Mês Atual</button>
+ 
+</div>
+<div></div>
+<div class="d-flex justify-content-between" style="margin-bottom: 10px;">
+    
+    <button class="btn btn-secondary btn-sm m-0 p-0" @onclick="ShowAllTransactions">Todas</button>
+</div>
+
+<h6>
+  <span class="text-decoration-underline">Relatório do Cartão de Crédito</span>
+</h6>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Gasto</th>
+            <th>Motivo</th>
+            <th>Valor</th>
+            <th>Pacelas</th>
+            <th>Vencim</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var transaction in filteredTransactions)
+        {
+            <tr>
+                <td>@transaction.ExpenseName</td>
+                <td>@transaction.Reason</td>
+                <td>@transaction.Amount.ToString("C")</td>
+                <td>@transaction.Installments</td>
+                <td>@transaction.DueDate.ToShortDateString()</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h6>Total da fatura: @filteredTransactions.Sum(t => t.Amount).ToString("C")</h6>
+
+@code {
+    private List<CreditCardTransaction> transactions = new List<CreditCardTransaction>();
+    private List<CreditCardTransaction> filteredTransactions = new List<CreditCardTransaction>();
+    private List<CreditCard> creditCards = new List<CreditCard>();
+    private CreditCard selectedCard; // Propriedade para o cartão selecionado
+    private string selectedCardName;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Carrega os cartões de crédito do LocalStorage
+        var storedCards = await LocalStorage.GetItemAsync<List<CreditCard>>("creditCards");
+        if (storedCards != null)
+        {
+            creditCards = storedCards;
+            selectedCardName = creditCards.FirstOrDefault()?.CardName; // Seleciona o primeiro cartão como padrão
+            selectedCard = creditCards.FirstOrDefault(); // Inicializa o cartão selecionado
+        }
+
+        // Carrega as transações do LocalStorage
+        var storedTransactions = await LocalStorage.GetItemAsync<List<CreditCardTransaction>>("creditCardTransactions");
+        if (storedTransactions != null)
+        {
+            transactions = storedTransactions;
+            FilterCurrentMonth(); // Inicializa com as transações do mês atual
+        }
+    }
+
+    private void FilterCurrentMonth()
+    {
+        if (!string.IsNullOrEmpty(selectedCardName))
+        {
+            var currentMonth = DateTime.Now.Month;
+            var currentYear = DateTime.Now.Year;
+            
+            // Filtra as transações do cartão selecionado para o mês atual
+            filteredTransactions = transactions
+                .Where(t => t.CreditCardName == selectedCardName && t.DueDate.Month == currentMonth && t.DueDate.Year == currentYear)
+                .ToList();
+        }
+    }
+
+    private void ShowAllTransactions()
+    {
+        if (!string.IsNullOrEmpty(selectedCardName))
+        {
+            // Exibe todas as transações do cartão selecionado
+            filteredTransactions = transactions.Where(t => t.CreditCardName == selectedCardName).ToList();
+        }
+    }
+
+    private async Task OnCardChanged(ChangeEventArgs e)
+    {
+        selectedCardName = e.Value.ToString(); // Atualiza o cartão selecionado
+        FilterCurrentMonth(); // Atualiza o relatório para exibir transações do mês atual após troca de cartão
+    }
+}

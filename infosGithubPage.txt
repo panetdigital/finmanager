@@ -1,0 +1,21 @@
+1 indica a branch onde vai fica seu projeto
+ push:
+    branches: ["master"]
+
+2 adicionar url base no projeto
+ <base href="https://panetdigital.github.io/appfinancia/" />
+
+3 muda nome do projeto dentro main.yml
+
+ - name: Publish .NET Core Project
+        run: dotnet publish AppFinancia.csproj -c:Release -o docs --nologo
+
+4 Attençao duplicaçao nome do projeto generativa
+######################
+pra roda ele no servidor local, vai precisa de pequena ajusto sobre link url base
+<base href="/" />
+no index ter que tirar no NavMenu onde esta link do home recolar / pra mostra diretorio da pagina
+
+            <NavLink class="nav-link" href="/" Match="NavLinkMatch.All">
+                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
+            </NavLink>

@@ -1,0 +1,13 @@
+@page "/cvs"
+@inject CsvExportService CsvExportService
+@inject TransactionService TransactionService
+
+<button class="btn btn-success" @onclick="ExportTransactionsToCsv">Exportar para CSV</button>
+
+@code {
+    private async Task ExportTransactionsToCsv()
+    {
+        var transactions = await TransactionService.GetTransactionsAsync();
+        await CsvExportService.ExportTransactionsToCsvAsync(transactions);
+    }
+}
