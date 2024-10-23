@@ -1,7 +1,6 @@
 @page "/testimonials"
 <div class="test-page">
     <h4>Testimonios</h4>
-  
 </div>
 <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-indicators">
@@ -56,50 +55,64 @@
     </button>
 </div>
 
-@code {
-    // Simulação de testemunhos
-}
+
 <style>
     .test-page h4 {
-    text-align: center;
+        text-align: center;
     }
-   .testimonial-card {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #fff;
-    padding: 20px;
-    margin: 10px auto;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    max-width: 600px;
-}
 
-.testimonial-img {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    margin-right: 20px;
-}
+    .testimonial-card {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #fff;
+        padding: 20px;
+        margin: 10px auto;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        max-width: 600px;
+    }
 
-.testimonial-content {
-    text-align: left;
-}
+    .testimonial-img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        margin-right: 20px;
+    }
 
-.testimonial-name {
-    font-size: 20px;
-    font-weight: bold;
-    color: #333;
-}
+    .testimonial-content {
+        text-align: left;
+    }
 
-.testimonial-comment {
-    font-size: 16px;
-    font-style: italic;
-    color: #555;
-}
+    .testimonial-name {
+        font-size: 20px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .testimonial-comment {
+        font-size: 16px;
+        font-style: italic;
+        color: #555;
+    }
+
+    /* Estilos para os controles do carrossel */
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+        background-color: black; /* Cor preta para os botões */
+        border-radius: 50%; /* Tornando os ícones circulares */
+        width: 30px;
+        height: 30px;
+    }
+
+    .carousel-control-prev:hover,
+    .carousel-control-next:hover {
+        background-color: rgba(238, 223, 223, 0.151); /* Mais escuro ao passar o mouse */
+    }
 
 
 </style>
+
 @code {
     // Simulação de depoimentos de usuários sobre o aplicativo
 }
